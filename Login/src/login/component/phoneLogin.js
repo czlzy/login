@@ -12,7 +12,7 @@ export default class Login extends Component {
 	  	phoneText:'',//账号框的内容
 		passWordText:'',//密码框的内容
 		showConfirm:false,//是否显示确认电话号码组件 false:不显示 true:显示
-		changeLoginWay:1,//1表示密码登录，2表示验证码登录
+		textMessage:true,//true表示密码登录，false表示短信验证登录
 	  };
 	}
 	static navigationOptions ={
@@ -35,6 +35,18 @@ export default class Login extends Component {
 			showConfirm:hideConfirm
 		})
 	}
+	componentDidMount() {
+		alert(Dimensions.get('window').scale)
+	}
+	componentWillUpdate() {
+		if(!this.state.textMessage){
+			this._textInput.setNativeProps({maxLength:6})
+		}else if(this.state.textMessage){
+			this._textInput.setNativeProps({maxLength:16})
+		}
+
+	}
+	
 	render(){
 		return (
 
@@ -66,9 +78,14 @@ export default class Login extends Component {
 					</View>
 					<View style = {styles.inputBox}>
 						<View style={styles.imageBox}>
-							<Image style = {[styles.loginImage,{width:checkDeviceWidth(35),}]} source = {require('../resource/password.png')}></Image>
+							{
+								this.state.textMessage?(
+									<Image style = {[styles.loginImage,{width:checkDeviceWidth(35),}]} source = {require('../resource/password.png')}></Image>
+								):(<Image style = {[styles.loginImage,{width:checkDeviceWidth(35),marginLeft:3}]} source = {require('../resource/code.png')}></Image>)
+							}
 						</View>	
 						<TextInput
+						ref = {(c)=>{this._textInput = c}}
 						maxLength = {16}
 						style = {[styles.textInput,{marginLeft:-10,}]} 
 						placeholderTextColor = '#cecece' 
@@ -77,9 +94,17 @@ export default class Login extends Component {
 						underlineColorAndroid= {'transparent'}
 						onChangeText={(Text)=>{this.setState({passWordText:Text})}}
 						></TextInput>
+						{
+							!this.state.textMessage?(
+								<TouchableOpacity style = {styles.codeBtn} onPress = {()=>{this.changeShowConfirm()}}>
+								<Text style= {styles.information}>获取验证码</Text>
+								</TouchableOpacity>):null
+						}
 					</View>
-					<TouchableOpacity activeOpacity = {0.8} onPress = {()=>{this.changeShowConfirm()}} >
-						<Text style = {styles.changeLogin}>通过短信验证码登录</Text>
+					<TouchableOpacity activeOpacity = {0.8} onPress = {()=>{this.setState({textMessage:!this.state.textMessage})}} >
+						{this.state.textMessage?<Text style = {styles.changeLogin}>通过短信验证码登录</Text>:
+							<Text style = {styles.changeLogin}>通过密码登录</Text>
+						}
 					</TouchableOpacity>
 					{
 						this.state.phoneText && this.state.passWordText?
@@ -97,10 +122,11 @@ export default class Login extends Component {
 				</View>
 				</View>
 				{
-					this.state.showConfirm?<Confirm 
-											phoneText = {this.state.phoneText}
-											cancelSend = {this.cancelSend}
-											></Confirm>:null
+					this.state.showConfirm?
+					<Confirm 
+					phoneText = {this.state.phoneText}
+					cancelSend = {this.cancelSend}
+					></Confirm>:null
 				}
 			</View>
 			
@@ -114,8 +140,7 @@ const styles = StyleSheet.create({
 		backgroundColor:'#ffffff',
 	},
 	goBack:{
-		fontFamily:'PingFang',
-		fontSize:22,
+		fontSize:checkDeviceHeight(32),
 		color:'#0ebe0c',
 	},
 	goBackBtn:{
@@ -124,8 +149,7 @@ const styles = StyleSheet.create({
 		marginTop:checkDeviceHeight(35),
 	},
 	loginTitle:{
-		fontFamily:'PingFang',
-		fontSize:31,
+		fontSize:checkDeviceHeight(50),
 		marginTop:checkDeviceHeight(20),
 		color:'#333333',
 		marginBottom:checkDeviceHeight(110),
@@ -152,12 +176,12 @@ const styles = StyleSheet.create({
 		marginBottom:checkDeviceWidth(30),
 	},
 	areaTitle:{
-		fontSize:22,
+		fontSize:checkDeviceHeight(30),
 		color:'#333333',
 		marginRight:checkDeviceWidth(35),
 	},
 	country:{
-		fontSize:22,
+		fontSize:checkDeviceHeight(30),
 		color:'#333333',
 	},
 	rightLogo:{
@@ -185,22 +209,35 @@ const styles = StyleSheet.create({
 	},
 	NumberBefore:{
 		color:'#333333',
-		fontSize:22,
+		fontSize:checkDeviceHeight(30),
 	},
 	textInput:{
 		padding:0,
-		fontSize:22,
+		fontSize:checkDeviceHeight(30),
 		flex:1,
-		
+	},
+	codeBtn:{
+		width:checkDeviceWidth(120),
+		height:checkDeviceHeight(50),
+		borderWidth:1,
+		borderColor:'#333333',
+		borderRadius:3,
+		marginRight:checkDeviceWidth(20),
+		justifyContent:'center',
+		alignItems:'center',
+	},
+	information:{
+		color:'#333333',
+		fontSize:checkDeviceHeight(20),
 	},
 	changeLogin:{
 		color:'#6e7c99',
-		fontSize:20,
+		fontSize:checkDeviceHeight(28),
 		marginBottom:checkDeviceHeight(60),
 	},
 	loginText:{
 		color:'white',
-		fontSize:22,
+		fontSize:checkDeviceHeight(36),
 	},
 	Login:{
 		width:Dimensions.get('window').width - checkDeviceWidth(80),
@@ -209,7 +246,7 @@ const styles = StyleSheet.create({
 		justifyContent:'center',
 		alignItems:'center',
 		borderRadius:10,
-		marginBottom:checkDeviceHeight(460)-30,
+		marginBottom:checkDeviceHeight(460),
 	},
 	footer:{
 		flexDirection:'row',
@@ -217,6 +254,6 @@ const styles = StyleSheet.create({
 	},
 	footerText:{
 		color:'#6e7c99',
-		fontSize:20,
+		fontSize:checkDeviceHeight(28),
 	},
 });

@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 	},
 	goBack:{
 		fontFamily:'PingFang',
-		fontSize:22,
+		fontSize:checkDeviceHeight(32),
 		color:'#0ebe0c',
 	},
 	goBackBtn:{
@@ -90,21 +90,21 @@ const styles = StyleSheet.create({
 		marginTop:checkDeviceHeight(35),
 	},
 	loginTitle:{
-		fontFamily:'PingFang',
-		fontSize:31,
+		fontSize:checkDeviceHeight(50),
 		marginTop:checkDeviceHeight(20),
 		color:'#333333',
 		marginBottom:checkDeviceHeight(110),
 	},
 	content:{
 		alignItems:'center',
-		width:Dimensions.get('window').width - checkDeviceWidth(80),
+		marginLeft:checkDeviceWidth(80),
+		marginRight:checkDeviceWidth(80),
 		flex:1,
 	},
 	
 	inputBox:{
-		height:checkDeviceHeight(80),
 		width:Dimensions.get('window').width - checkDeviceWidth(80),
+		height:checkDeviceHeight(80),
 		flexDirection:'row',
 		alignItems:'center',
 		borderRadius:10,
@@ -130,21 +130,21 @@ const styles = StyleSheet.create({
 	},
 	NumberBefore:{
 		color:'#333333',
-		fontSize:22,
+		fontSize:checkDeviceHeight(30),
 	},
 	textInput:{
 		padding:0,
 		flex:1,
-		fontSize:22,
-		marginLeft:-10
+		fontSize:checkDeviceHeight(30),
+		
 	},
 	
 	loginText:{
 		color:'white',
-		fontSize:22,
+		fontSize:checkDeviceHeight(36),
 	},
 	Login:{
-		width:Dimensions.get('window').width - checkDeviceHeight(80),
+		width:Dimensions.get('window').width - checkDeviceWidth(80),
 		height:checkDeviceHeight(90),
 		backgroundColor:'#1aad19',
 		justifyContent:'center',
@@ -159,6 +159,6 @@ const styles = StyleSheet.create({
 	},
 	footerText:{
 		color:'#6e7c99',
-		fontSize:20,
+		fontSize:checkDeviceHeight(28),
 	},
 });

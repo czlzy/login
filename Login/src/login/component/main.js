@@ -56,12 +56,10 @@ const styles = StyleSheet.create({
 		
 	},
 	loginText:{
-		fontFamily:'PingFang',
 		color:'white',
-		fontSize:22,
+		fontSize:checkDeviceHeight(36),
 	},
 	registerText:{
-		fontFamily:'VINCHAND',
-		fontSize:22,
+		fontSize:checkDeviceHeight(36),
 	},
 });

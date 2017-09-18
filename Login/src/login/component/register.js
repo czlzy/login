@@ -26,7 +26,7 @@ export default class Register extends Component {
 							<Text style = {styles.nickName}>昵称</Text>
 						</View>
 						<TextInput 
-							style = {styles.textInput}
+							style = {[styles.textInput,{marginLeft:-10}]}
 							placeholderTextColor = '#bebebe' 
 							placeholder = '例如：王凯'
 							onChangeText={(Text)=>{this.setState({nickNameText:Text})}}
@@ -60,7 +60,7 @@ export default class Register extends Component {
 						</View>	
 						<TextInput
 						maxLength = {16}
-						style = {[styles.textInput]} 
+						style = {[styles.textInput,{marginLeft:-10}]} 
 						placeholderTextColor = '#bebebe' 
 						secureTextEntry = {true} 
 						placeholder = '请输入密码' 
@@ -73,7 +73,7 @@ export default class Register extends Component {
 						</View>	
 						<TextInput
 						maxLength = {6}
-						style = {[styles.textInput]} 
+						style = {[styles.textInput,{marginLeft:-10}]} 
 						placeholderTextColor = '#bebebe' 
 						placeholder = '请输入验证码' 
 						onChangeText={(Text)=>{this.setState({codeText:Text})}}
@@ -82,7 +82,7 @@ export default class Register extends Component {
 							<Text style= {styles.information}>获取验证码</Text>
 						</TouchableOpacity>
 					</View>
-					<Text style={{fontSize:14,color:'#bebebe'}}>密码由8-12位组成, 其中最少包括一个字母和数字，不能使用符号</Text>
+					<Text style={{fontSize:checkDeviceHeight(24),color:'#bebebe'}}>密码由8-12位组成, 其中最少包括一个字母和数字，不能使用符号</Text>
 					{
 						this.state.phoneText && this.state.passWordText&&this.state.codeText&&this.state.nickNameText?
 						(
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
 		marginBottom:checkDeviceHeight(50),
 	},
 	goBack:{
-		fontSize:22,
+		fontSize:checkDeviceHeight(32),
 		color:'#0ebe0c',
 	},
 	goBackBtn:{
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
 	},
 	phoneTitle:{
 		color:'#333333',
-		fontSize:22,
+		fontSize:checkDeviceHeight(32),
 		alignSelf:'center',
 	},
 	content:{
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
 		flex:1,
 	},
 	nickName:{
-		fontSize:22,
+		fontSize:checkDeviceHeight(30),
 		color:'#333333',
 	},
 	area:{
@@ -160,12 +160,12 @@ const styles = StyleSheet.create({
 	},
 	
 	areaTitle:{
-		fontSize:22,
+		fontSize:checkDeviceHeight(30),
 		color:'#333333',
 		marginRight:checkDeviceWidth(35),
 	},
 	country:{
-		fontSize:22,
+		fontSize:checkDeviceHeight(30),
 		color:'#333333',
 	},
 	rightLogo:{
@@ -193,13 +193,14 @@ const styles = StyleSheet.create({
 	},
 	NumberBefore:{
 		color:'#333333',
-		fontSize:22,
+		fontSize:checkDeviceHeight(30),
 	},
 	textInput:{
+		padding:0,
 		height:checkDeviceHeight(90),
-		fontSize:22,
+		fontSize:checkDeviceHeight(30),
 		flex:1,
-		marginLeft:-10
+		
 	},
 	codeBtn:{
 		width:checkDeviceWidth(120),
@@ -213,11 +214,11 @@ const styles = StyleSheet.create({
 	},
 	information:{
 		color:'#333333',
-		fontSize:13,
+		fontSize:checkDeviceHeight(20),
 	},
 	registerText:{
 		color:'white',
-		fontSize:22,
+		fontSize:checkDeviceHeight(36),
 	},
 	register:{
 		width:Dimensions.get('window').width - checkDeviceHeight(80),
@@ -231,7 +232,7 @@ const styles = StyleSheet.create({
 	},
 	explanation:{
 		color:'#cecece',
-		fontSize:17,
+		fontSize:checkDeviceHeight(28),
 	},
 	protocol:{
 		color:'#4a5b80'
