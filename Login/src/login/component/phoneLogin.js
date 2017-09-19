@@ -4,20 +4,7 @@ import {checkDeviceHeight,checkDeviceWidth} from './check';
 import Main from './main';
 import checkReg from './regExp';
 import Confirm from './confirm';
-import ContentPage from './contentPage';
-import SQLite from '../sqlite/sqlite';
-var sqLite = new SQLite();
-var db;
 export default class Login extends Component {
-	componentWillUnmount() {
-		sqLite.close();
-	}
-	componentWillMount(){
-		if(!db){
-			db = sqLite.open();
-		}
-		sqLite.createTable();
-	}
 	constructor(props) {
 	  super(props);
 	
