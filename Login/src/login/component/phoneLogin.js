@@ -4,20 +4,7 @@ import {checkDeviceHeight,checkDeviceWidth} from './check';
 import Main from './main';
 import checkReg from './regExp';
 import Confirm from './confirm';
-import ContentPage from './contentPage';
-import SQLite from '../sqlite/sqlite';
-var sqLite = new SQLite();
-var db;
 export default class Login extends Component {
-	componentWillUnmount() {
-		sqLite.close();
-	}
-	componentWillMount(){
-		if(!db){
-			db = sqLite.open();
-		}
-		sqLite.createTable();
-	}
 	constructor(props) {
 	  super(props);
 	
@@ -48,6 +35,9 @@ export default class Login extends Component {
 			showConfirm:hideConfirm
 		})
 	}
+	componentDidMount() {
+		alert(Dimensions.get('window').scale)
+	}
 	componentWillUpdate() {
 		if(!this.state.textMessage){
 			this._textInput.setNativeProps({maxLength:6})
@@ -56,21 +46,6 @@ export default class Login extends Component {
 		}
 
 	}
-
-	addUser = ()=>{
-		try{
-			var userData = [];
-			var user = {};
-			user.userName = this.state.phoneText;
-			user.passWord = this.state.passWordText;
-			userData.push(user);
-			//插入数据
-			sqLite.insertUserData(userData);
-			}catch(error) {
-				console.log(error);
-			}
-			this.props.navigation.navigate('contentPage');
-		}
 	
 	render(){
 		return (
@@ -134,7 +109,7 @@ export default class Login extends Component {
 					{
 						this.state.phoneText && this.state.passWordText?
 						(
-							<TouchableOpacity activeOpacity = {0.8} style={styles.Login} onPress = {()=>{this.addUser()}}>
+							<TouchableOpacity activeOpacity = {0.8} style={styles.Login} onPress = {()=>{checkReg(1,this.state.phoneText)}}>
 								<Text style = {styles.loginText}>登录</Text>
 							</TouchableOpacity>)
 						:(
