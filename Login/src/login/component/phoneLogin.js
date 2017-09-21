@@ -1,18 +1,25 @@
 import React,{Component}from 'react';
 import {View,TextInput,Text,Image,TouchableOpacity,StyleSheet,Dimensions,Alert}from 'react-native';
 import {checkDeviceHeight,checkDeviceWidth} from './check';
+import {
+    Navigator
+} from 'react-native-deprecated-custom-components';
 import Main from './main';
+import {connect} from 'react-redux';
 import checkReg from './regExp';
 import Confirm from './confirm';
 import ContentPage from './contentPage';
 import SQLite from '../sqlite/sqlite';
+import {doLogin} from '../action/actions';
+import emailLogin from './emailLogin';
 var sqLite = new SQLite();
-var db;
+let db;
 export default class Login extends Component {
 	componentWillUnmount() {
 		sqLite.close();
 	}
 	componentWillMount(){
+		console.log(this.props)
 		if(!db){
 			db = sqLite.open();
 		}
@@ -27,9 +34,6 @@ export default class Login extends Component {
 		showConfirm:false,//是否显示确认电话号码组件 false:不显示 true:显示
 		textMessage:true,//true表示密码登录，false表示短信验证登录
 	  };
-	}
-	static navigationOptions ={
-		header:null,
 	}
 	//当点击短信验证的时候检测手机号码的方法
 	changeShowConfirm=()=>{
@@ -49,6 +53,7 @@ export default class Login extends Component {
 		})
 	}
 	componentWillUpdate() {
+		console.log(this.props.loading)
 		if(!this.state.textMessage){
 			this._textInput.setNativeProps({maxLength:6})
 		}else if(this.state.textMessage){
@@ -69,14 +74,20 @@ export default class Login extends Component {
 			}catch(error) {
 				console.log(error);
 			}
-			this.props.navigation.navigate('contentPage');
+			this.props.navigator.push({
+				sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+                component: ContentPage,
+			});
 		}
 	
 	render(){
 		return (
 
 			<View style= {styles.container}>
-				<TouchableOpacity style={styles.goBackBtn}  onPress = {()=>{this.props.navigation.goBack();}}><Text style = {styles.goBack}>返回</Text></TouchableOpacity>
+				<TouchableOpacity style={styles.goBackBtn}  onPress = {()=>{this.props.navigator.push({
+				sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+                component: Main,
+				});}}><Text style = {styles.goBack}>返回</Text></TouchableOpacity>
 				<View style = {styles.content}>
 					<Text style= {styles.loginTitle}>使用手机号登录</Text>	
 					<TouchableOpacity onPress={()=>{Alert.alert('更换地区')}}>
@@ -142,7 +153,7 @@ export default class Login extends Component {
 							)
 					}
 				<View style= {styles.footer}>
-					<TouchableOpacity onPress = {()=>{this.props.navigation.navigate('emailLogin')}} activeOpacity = {0.8}><Text style= {[styles.footerText,{marginRight:checkDeviceWidth(110)}]}>其他方式登录</Text></TouchableOpacity>
+					<TouchableOpacity onPress = {()=>{this.props.navigator.push({sceneConfig: Navigator.SceneConfigs.FloatFromRight,component: emailLogin,})}} activeOpacity = {0.8}><Text style= {[styles.footerText,{marginRight:checkDeviceWidth(110)}]}>其他方式登录</Text></TouchableOpacity>
 					<TouchableOpacity activeOpacity = {0.8}><Text style= {styles.footerText}>登录遇到问题?</Text></TouchableOpacity>
 				</View>
 				</View>
@@ -157,7 +168,19 @@ export default class Login extends Component {
 			
 		)
 	}
+
+	handleLogin=(a,b)=>{
+		this.props.dispatch(doLogin(a,b));
+	}
 } 
+
+function mapStateToProps(store) {
+	return {
+		loading:store.loginIn.loading
+	}
+}
+
+
 const styles = StyleSheet.create({
 	container:{
 		flex:1,

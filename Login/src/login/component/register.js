@@ -1,6 +1,9 @@
 import React,{Component}from 'react';
 import {View,TextInput,Text,Image,TouchableOpacity,StyleSheet,Dimensions,Alert}from 'react-native';
 import {checkDeviceHeight,checkDeviceWidth} from './check';
+import {
+    Navigator
+} from 'react-native-deprecated-custom-components';
 export default class Register extends Component {
 	state = {
 		nickNameText:'',
@@ -8,14 +11,11 @@ export default class Register extends Component {
 		passWordText:'',
 		codeText:'',
 	}
-	static navigationOptions ={
-		header:null,
-	}
 	render(){
 		return (
 			<View style={styles.container}>
 				<View style = {styles.Title}>
-					<TouchableOpacity style={styles.goBackBtn}  onPress = {()=>{this.props.navigation.goBack();}}>
+					<TouchableOpacity style={styles.goBackBtn}  onPress = {()=>{this.props.navigator.pop();}}>
 						<Text style = {styles.goBack}>返回</Text>
 					</TouchableOpacity>
 					<Text style = {styles.phoneTitle}>手机号注册</Text>
