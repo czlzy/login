@@ -8,7 +8,10 @@ import ContentPage from '../component/contentPage';
 import {
     Navigator,
 } from 'react-native-deprecated-custom-components';
+<<<<<<< HEAD
 let isLogged = false;
+=======
+>>>>>>> chenzhengliang
     class LoginApp extends Component {
         componentWillUnmount() {
             sqlite.close();
@@ -26,8 +29,12 @@ let isLogged = false;
                     renderScene={(route, navigator) =>{
                         let DefaultComponent=route.component;
                         console.log(DefaultComponent.name)
+<<<<<<< HEAD
                         console.log(isLogged)
                         if(DefaultComponent.name == 'Main'&& isLogged === true){
+=======
+                        if(DefaultComponent.name == 'Main'&& this.props.isLogged === true){
+>>>>>>> chenzhengliang
                             return <ContentPage navigator = {navigator}/>
                         }else {
                             return <DefaultComponent  navigator={navigator}/>
@@ -45,5 +52,8 @@ let isLogged = false;
 //   emailLogin:{screen:emailLogin},
 //   contentPage:{screen:contentPage}
 // });
+<<<<<<< HEAD
 
+=======
+>>>>>>> chenzhengliang
 export default LoginApp;

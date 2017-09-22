@@ -3,6 +3,11 @@ import {ScrollView,View,TextInput,Text,Image,TouchableOpacity,StyleSheet,Dimensi
 import {checkDeviceHeight,checkDeviceWidth} from './check';
 import Main from './main';
 import checkReg from './regExp';
+<<<<<<< HEAD
+=======
+import findPassword from './findPassword';
+import phoneLogin from './phoneLogin';
+>>>>>>> chenzhengliang
 import {
     Navigator
 } from 'react-native-deprecated-custom-components';
@@ -18,7 +23,11 @@ export default class Login extends Component {
 	render(){
 		return (
 			<View style= {styles.container}>
+<<<<<<< HEAD
 				<TouchableOpacity style={styles.goBackBtn}  onPress = {()=>{this.props.navigator.pop();}}><Text style = {styles.goBack}>返回</Text></TouchableOpacity>
+=======
+				<TouchableOpacity style={styles.goBackBtn}  onPress = {()=>{this.props.navigator.push({sceneConfig: Navigator.SceneConfigs.FloatFromLeft,component: phoneLogin});}}><Text style = {styles.goBack}>返回</Text></TouchableOpacity>
+>>>>>>> chenzhengliang
 				<View style = {styles.content}>
 					<Text style= {styles.loginTitle}>QQ号/邮箱登录</Text>	
 					
@@ -65,8 +74,13 @@ export default class Login extends Component {
 							)
 					}
 					<View style= {styles.footer}>
+<<<<<<< HEAD
 						<TouchableOpacity onPress = {()=>{this.props.navigator.pop()}} activeOpacity = {0.8}><Text style= {[styles.footerText,{marginRight:checkDeviceWidth(110)}]}>其他方式登录</Text></TouchableOpacity>
 						<TouchableOpacity activeOpacity = {0.8}><Text style= {styles.footerText}>登录遇到问题?</Text></TouchableOpacity>
+=======
+						<TouchableOpacity onPress = {()=>{this.props.navigator.push({sceneConfig: Navigator.SceneConfigs.FloatFromLeft,component: phoneLogin,})}} activeOpacity = {0.8}><Text style= {[styles.footerText,{marginRight:checkDeviceWidth(110)}]}>其他方式登录</Text></TouchableOpacity>
+						<TouchableOpacity onPress = {()=>{this.props.navigator.push({sceneConfig: Navigator.SceneConfigs.FloatFromRight,component: findPassword,})}} activeOpacity = {0.8}><Text style= {styles.footerText}>忘记密码</Text></TouchableOpacity>
+>>>>>>> chenzhengliang
 					</View>
 				</View>
 			</View>

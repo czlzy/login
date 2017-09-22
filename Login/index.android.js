@@ -9,4 +9,5 @@ import {
   AppRegistry,
 } from 'react-native';
 import App from './src/login/Root';
-AppRegistry.registerComponent('Login', App);
+AppRegistry.registerComponent('Login', ()=>App);
+

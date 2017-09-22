@@ -4,13 +4,35 @@ import {checkDeviceHeight,checkDeviceWidth} from './check';
 import {
     Navigator
 } from 'react-native-deprecated-custom-components';
+<<<<<<< HEAD
+=======
+import Confirm from './confirm';
+>>>>>>> chenzhengliang
 export default class Register extends Component {
 	state = {
 		nickNameText:'',
 		phoneText:'',
 		passWordText:'',
 		codeText:'',
+		showConfirm:false,//是否显示确认电话号码组件 false:不显示 true:显示
 	}
+<<<<<<< HEAD
+=======
+	changeShowConfirm=()=>{
+		if((/^1[34578]\d{9}$/.test(this.state.phoneText)) && this.state.phoneText && this.state.passWordText&&this.state.nickNameText){
+			this.setState({
+				showConfirm:true,
+			});
+		}else{
+			alert('信息不能为空!');
+		}
+	}
+	cancelSend = (hideConfirm)=>{
+		this.setState({
+			showConfirm:hideConfirm
+		})
+	}
+>>>>>>> chenzhengliang
 	render(){
 		return (
 			<View style={styles.container}>
@@ -78,7 +100,7 @@ export default class Register extends Component {
 						placeholder = '请输入验证码' 
 						onChangeText={(Text)=>{this.setState({codeText:Text})}}
 						underlineColorAndroid= {'transparent'}></TextInput>
-						<TouchableOpacity style = {styles.codeBtn} onPress = {()=>{Alert.alert('获取验证码成功!')}}>
+						<TouchableOpacity style = {styles.codeBtn} onPress = {()=>{this.changeShowConfirm()}}>
 							<Text style= {styles.information}>获取验证码</Text>
 						</TouchableOpacity>
 					</View>
@@ -100,6 +122,13 @@ export default class Register extends Component {
 						</Text>
 					</View>
 				</View>
+				{
+					this.state.showConfirm?
+					<Confirm 
+					phoneText = {this.state.phoneText}
+					cancelSend = {this.cancelSend}
+					></Confirm>:null
+				}
 			</View>
 		)
 	}
