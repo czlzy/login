@@ -1,7 +1,10 @@
 import React,{Component}from 'react';
 import {View,TextInput,Text,Image,TouchableOpacity,StyleSheet,Dimensions,Alert}from 'react-native';
 import SQLite from '../sqlite/sqlite';
-
+import {
+    Navigator
+} from 'react-native-deprecated-custom-components';
+import phoneLogin from './phoneLogin';
 let sqlite = new SQLite();
 let db;
 export default class ContentPage extends Component {
@@ -12,7 +15,10 @@ export default class ContentPage extends Component {
 		header:null,
 	}
 	loginOut=()=>{
-		this.props.navigation.goBack();
+		this.props.navigator.push({
+			sceneConfig: Navigator.SceneConfigs.FloatFromLeft,
+			component: phoneLogin,
+		});
 		sqlite.deleteData();
 	}
 	render(){

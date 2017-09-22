@@ -3,6 +3,9 @@ export default checkReg = (type,value)=>{//type:1 手机登录  2:邮箱登录
 		case 1:
 			if(!(/^1[34578]\d{9}$/.test(value))){
 				alert('账号必须是手机');
+				return false;
+			}else{
+				return true;
 			}
 		break;
 		case 2:
@@ -10,5 +13,6 @@ export default checkReg = (type,value)=>{//type:1 手机登录  2:邮箱登录
 				alert('账号必须是邮箱');
 			}
 		break;
+		
 	}
 }

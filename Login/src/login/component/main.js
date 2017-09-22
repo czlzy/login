@@ -3,59 +3,28 @@ import {View,TextInput,Text,Image,TouchableOpacity,StyleSheet,Dimensions}from 'r
 import Login from './phoneLogin';
 import Register from './register';
 import {checkDeviceHeight,checkDeviceWidth} from './check';
-import SQLite from '../sqlite/sqlite';
+import {
+    Navigator
+} from 'react-native-deprecated-custom-components';
 
-let sqlite = new SQLite();
-let db;
 export default class Main extends Component {
 	componentWillUnmount() {
 		sqlite.close();
 	}
-	constructor(props) {
-	  super(props);
-	
-	  this.state = {
-	  	account:'',
-	  };
-	}
-
-	static navigationOptions ={
-		header:null,
-	}
-	componentWillMount() {
-		if (!db) {
-			db = sqlite.open();
-		}
-		db.transaction((tx)=>{
-			tx.executeSql("select * from user",[],(tx,results)=>{
-				var s = [];
-				var b = {};
-				var u = results.rows.item(0);
-				b.userName = u.userName;
-				b.passWord = u.passWord;
-				s.push(b);
-				this.setState({account:s},()=>{
-					if(this.state.account){
-						this.props.navigation.navigate('contentPage');
-					}else{
-						console.log(account);
-					}
-					return;
-				});
-			})
-		})
-
-
-	}
-	
 	render(){
 		return (
 			<View style={styles.container}>
 				<Image style = {styles.banner} source = {require('../resource/mainBanner.jpg')}>
-					<TouchableOpacity activeOpacity = {0.8} style={styles.Login} onPress = {()=>{this.props.navigation.navigate('Login')}}>
+					<TouchableOpacity activeOpacity = {0.8} style={styles.Login} onPress = {()=>{this.props.navigator.push({
+						sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+                        component: Login,
+					})}}>
 						<Text style = {styles.loginText}>登录</Text>
 					</TouchableOpacity>
-					<TouchableOpacity activeOpacity = {0.8} style={styles.register} onPress = {()=>{this.props.navigation.navigate('Register')}}>
+					<TouchableOpacity activeOpacity = {0.8} style={styles.register} onPress = {()=>{this.props.navigator.push({
+						sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+                        component: Register,
+                    	})}}>
 						<Text style = {styles.registerText}>注册</Text>
 					</TouchableOpacity>
 				</Image>

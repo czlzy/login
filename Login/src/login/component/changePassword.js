@@ -8,24 +8,13 @@ import Main from './main';
 import {connect} from 'react-redux';
 import checkReg from './regExp';
 import Confirm from './confirm';
-import ContentPage from './contentPage';
 import SQLite from '../sqlite/sqlite';
 import {doLogin} from '../action/actions';
 import emailLogin from './emailLogin';
-import findPassword from './findPassword';
+import PhoneLogin from './phoneLogin';
 var sqLite = new SQLite();
 let db;
 export default class Login extends Component {
-	componentWillUnmount() {
-		sqLite.close();
-	}
-	componentWillMount(){
-		console.log(this.props)
-		if(!db){
-			db = sqLite.open();
-		}
-		sqLite.createTable();
-	}
 	constructor(props) {
 	  super(props);
 	
@@ -47,52 +36,31 @@ export default class Login extends Component {
 		}
 	}
 
-	//子组件修改showConfirm
-	cancelSend = (hideConfirm)=>{
-		this.setState({
-			showConfirm:hideConfirm
-		})
-	}
-	componentWillUpdate() {
-		console.log(this.props.loading)
-		if(!this.state.textMessage){
-			this._textInput.setNativeProps({maxLength:6})
-		}else if(this.state.textMessage){
-			this._textInput.setNativeProps({maxLength:16})
+	newPassword = ()=>{
+		if(this.state.phoneText === this.state.passWordText){
+			//修改数据库里面的对应账号的密码
+
+
+			//修改成功，页面跳转到登录页面
+			alert('密码修改成功，请重新登录!')
+			this.props.navigator.push({sceneConfig: Navigator.SceneConfigs.FloatFromRight,component: PhoneLogin,})
+		}else {
+			alert('两次输入密码不匹配');
 		}
 
+		
 	}
 
-	addUser = ()=>{
-		if(checkReg(1,this.state.phoneText)){
-		try{
-			var userData = [];
-			var user = {};
-			user.userName = this.state.phoneText;
-			user.passWord = this.state.passWordText;
-			userData.push(user);
-			//插入数据
-			sqLite.insertUserData(userData);
-			}catch(error) {
-				console.log(error);
-			}
-			this.props.navigator.push({
-				sceneConfig: Navigator.SceneConfigs.FloatFromRight,
-                component: ContentPage,
-			});
-		}
-	}
-	
 	render(){
 		return (
 
 			<View style= {styles.container}>
 				<TouchableOpacity style={styles.goBackBtn}  onPress = {()=>{this.props.navigator.push({
 				sceneConfig: Navigator.SceneConfigs.FloatFromLeft,
-                component: Main,
+                component: PhoneLogin,
 				});}}><Text style = {styles.goBack}>返回</Text></TouchableOpacity>
 				<View style = {styles.content}>
-					<Text style= {styles.loginTitle}>使用手机号登录</Text>	
+					<Text style= {styles.loginTitle}>找回密码</Text>	
 					<TouchableOpacity onPress={()=>{Alert.alert('更换地区')}}>
 						<View style = {styles.area}>
 							<Text style = {styles.areaTitle}>国家/地区</Text>
@@ -102,26 +70,22 @@ export default class Login extends Component {
 					</TouchableOpacity>
 					<View style= {styles.inputBox}>
 						<View style={styles.imageBox}>
-							<Image style = {styles.loginImage} source = {require('../resource/ipone.png')}></Image>
+							<Image style = {styles.loginImage} source = {require('../resource/password.png')}></Image>
 						</View>
-						<Text style = {styles.NumberBefore}>+86</Text>
 						<TextInput
 						style = {styles.textInput}
 						maxLength = {11}
 						placeholderTextColor = '#cecece' 
-						placeholder = '请输入手机号码' 
+						placeholder = '输入新的密码' 
 						underlineColorAndroid= {'transparent'}
+						secureTextEntry = {true}
 						onChangeText={(Text)=>{this.setState({phoneText:Text})}}
 						></TextInput>
 						
 					</View>
 					<View style = {styles.inputBox}>
 						<View style={styles.imageBox}>
-							{
-								this.state.textMessage?(
-									<Image style = {[styles.loginImage,{width:checkDeviceWidth(35)}]} source = {require('../resource/password.png')}></Image>
-								):(<Image style = {[styles.loginImage,{width:checkDeviceWidth(35),marginLeft:5}]} source = {require('../resource/code.png')}></Image>)
-							}
+							<Image style = {styles.loginImage} source = {require('../resource/password.png')}></Image>
 						</View>	
 						<TextInput
 						ref = {(c)=>{this._textInput = c}}
@@ -129,35 +93,25 @@ export default class Login extends Component {
 						style = {[styles.textInput,{marginLeft:-10,}]} 
 						placeholderTextColor = '#cecece' 
 						secureTextEntry = {true} 
-						placeholder = '请输入密码' 
+						placeholder = '再次输入新密码' 
 						underlineColorAndroid= {'transparent'}
 						onChangeText={(Text)=>{this.setState({passWordText:Text})}}
 						></TextInput>
-						{
-							!this.state.textMessage?(
-								<TouchableOpacity style = {styles.codeBtn} onPress = {()=>{this.changeShowConfirm()}}>
-								<Text style= {styles.information}>获取验证码</Text>
-								</TouchableOpacity>):null
-						}
 					</View>
-					<TouchableOpacity activeOpacity = {0.8} onPress = {()=>{this.setState({textMessage:!this.state.textMessage})}} >
-						{this.state.textMessage?<Text style = {styles.changeLogin}>通过短信验证码登录</Text>:
-							<Text style = {styles.changeLogin}>通过密码登录</Text>
-						}
-					</TouchableOpacity>
+					<Text>密码由8-12位组成,其中至少包括一个字母和数字,不能使用符号</Text>
 					{
 						this.state.phoneText && this.state.passWordText?
 						(
-							<TouchableOpacity activeOpacity = {0.8} style={styles.Login} onPress = {()=>{this.addUser()}}>
-								<Text style = {styles.loginText}>登录</Text>
+							<TouchableOpacity activeOpacity = {0.8} style={styles.Login} onPress = {()=>{this.newPassword()}}>
+								<Text style = {styles.loginText}>确定</Text>
 							</TouchableOpacity>)
 						:(
-							<Image style={[styles.Login,{backgroundColor:'transparent'}]} source = {require('../resource/notLogin.png')}></Image>
+							<Image style={[styles.Login,{backgroundColor:'transparent'}]} source = {require('../resource/notSure.png')}></Image>
 							)
 					}
 				<View style= {styles.footer}>
 					<TouchableOpacity onPress = {()=>{this.props.navigator.push({sceneConfig: Navigator.SceneConfigs.FloatFromRight,component: emailLogin,})}} activeOpacity = {0.8}><Text style= {[styles.footerText,{marginRight:checkDeviceWidth(110)}]}>其他方式登录</Text></TouchableOpacity>
-					<TouchableOpacity onPress = {()=>{this.props.navigator.push({sceneConfig: Navigator.SceneConfigs.FloatFromRight,component: findPassword,})}} activeOpacity = {0.8}><Text style= {styles.footerText}>忘记密码</Text></TouchableOpacity>
+					<TouchableOpacity  activeOpacity = {0.8}><Text style= {styles.footerText}>忘记密码</Text></TouchableOpacity>
 				</View>
 				</View>
 				{
@@ -243,7 +197,7 @@ const styles = StyleSheet.create({
 		right:0,
 	},
 	loginImage:{
-		width:checkDeviceWidth(25),
+		width:checkDeviceWidth(35),
 		height:checkDeviceHeight(45),
 		borderRightWidth:1,
 		borderColor:'#ddddde',
@@ -290,6 +244,11 @@ const styles = StyleSheet.create({
 		color:'white',
 		fontSize:checkDeviceHeight(36),
 	},
+	passWordRules:{
+		fontSize:checkDeviceHeight(24),
+		color:'#bebebe',
+		marginBottom:checkDeviceHeight(30)
+	},
 	Login:{
 		width:Dimensions.get('window').width - checkDeviceWidth(80),
 		height:checkDeviceHeight(90),
@@ -297,7 +256,8 @@ const styles = StyleSheet.create({
 		justifyContent:'center',
 		alignItems:'center',
 		borderRadius:10,
-		marginBottom:checkDeviceHeight(460),
+		marginTop:checkDeviceHeight(30),
+		marginBottom:checkDeviceHeight(470),
 	},
 	footer:{
 		flexDirection:'row',

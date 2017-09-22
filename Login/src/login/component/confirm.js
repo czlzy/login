@@ -57,18 +57,18 @@ const styles = StyleSheet.create({
 	confirmNum:{
 		marginTop:checkDeviceHeight(40),
 		marginBottom:checkDeviceHeight(40),
-		fontSize:25,
+		fontSize:checkDeviceHeight(36),
 		color:'#333333',
 	},
 	confirmText:{
 		marginBottom:checkDeviceHeight(15),
-		fontSize:20,
+		fontSize:checkDeviceHeight(30),
 		color:'#808080',
 	},
 	phoneNumber:{
 		marginBottom:checkDeviceHeight(65)-30,
 		color:'#333333',
-		fontSize:20,
+		fontSize:checkDeviceHeight(30),
 	},
 	confirmBtn:{
 		flexDirection:'row',
@@ -76,11 +76,11 @@ const styles = StyleSheet.create({
 	},
 	sure:{
 		marginRight:checkDeviceWidth(40),
-		fontSize:20,
+		fontSize:checkDeviceHeight(30),
 		color:'#1aad19',
 	},
 	cancel:{
 		color:'#808080',
-		fontSize:20,
+		fontSize:checkDeviceHeight(30),
 	},
 })

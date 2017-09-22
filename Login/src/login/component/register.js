@@ -1,21 +1,37 @@
 import React,{Component}from 'react';
 import {View,TextInput,Text,Image,TouchableOpacity,StyleSheet,Dimensions,Alert}from 'react-native';
 import {checkDeviceHeight,checkDeviceWidth} from './check';
+import {
+    Navigator
+} from 'react-native-deprecated-custom-components';
+import Confirm from './confirm';
 export default class Register extends Component {
 	state = {
 		nickNameText:'',
 		phoneText:'',
 		passWordText:'',
 		codeText:'',
+		showConfirm:false,//是否显示确认电话号码组件 false:不显示 true:显示
 	}
-	static navigationOptions ={
-		header:null,
+	changeShowConfirm=()=>{
+		if((/^1[34578]\d{9}$/.test(this.state.phoneText)) && this.state.phoneText && this.state.passWordText&&this.state.nickNameText){
+			this.setState({
+				showConfirm:true,
+			});
+		}else{
+			alert('信息不能为空!');
+		}
+	}
+	cancelSend = (hideConfirm)=>{
+		this.setState({
+			showConfirm:hideConfirm
+		})
 	}
 	render(){
 		return (
 			<View style={styles.container}>
 				<View style = {styles.Title}>
-					<TouchableOpacity style={styles.goBackBtn}  onPress = {()=>{this.props.navigation.goBack();}}>
+					<TouchableOpacity style={styles.goBackBtn}  onPress = {()=>{this.props.navigator.pop();}}>
 						<Text style = {styles.goBack}>返回</Text>
 					</TouchableOpacity>
 					<Text style = {styles.phoneTitle}>手机号注册</Text>
@@ -78,7 +94,7 @@ export default class Register extends Component {
 						placeholder = '请输入验证码' 
 						onChangeText={(Text)=>{this.setState({codeText:Text})}}
 						underlineColorAndroid= {'transparent'}></TextInput>
-						<TouchableOpacity style = {styles.codeBtn} onPress = {()=>{Alert.alert('获取验证码成功!')}}>
+						<TouchableOpacity style = {styles.codeBtn} onPress = {()=>{this.changeShowConfirm()}}>
 							<Text style= {styles.information}>获取验证码</Text>
 						</TouchableOpacity>
 					</View>
@@ -100,6 +116,13 @@ export default class Register extends Component {
 						</Text>
 					</View>
 				</View>
+				{
+					this.state.showConfirm?
+					<Confirm 
+					phoneText = {this.state.phoneText}
+					cancelSend = {this.cancelSend}
+					></Confirm>:null
+				}
 			</View>
 		)
 	}

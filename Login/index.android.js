@@ -8,6 +8,6 @@
 import {
   AppRegistry,
 } from 'react-native';
-import {StackNavigator} from 'react-navigation';
-import loginApp from './src/login/page/index';
-AppRegistry.registerComponent('Login', () => loginApp);
+import App from './src/login/Root';
+AppRegistry.registerComponent('Login', ()=>App);
+
